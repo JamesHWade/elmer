@@ -4,70 +4,71 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Call LLM APIs from R • elmer</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
-<script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><meta property="og:title" content="Call LLM APIs from R">
+<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="apple-touch-icon-120x120.png">
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="apple-touch-icon-76x76.png">
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="apple-touch-icon-60x60.png">
+<script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
+<script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
+<link href="deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Call LLM APIs from R">
+<meta name="description" content="A consistent interface for calling LLM APIs. Includes support for streaming.">
 <meta property="og:description" content="A consistent interface for calling LLM APIs. Includes support for streaming.">
-<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
+<meta property="og:image" content="https://hadley.github.io/elmer/logo.png">
 </head>
-<body data-spy="scroll" data-target="#toc">
+<body>
+    <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
-    <div class="container template-home">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="index.html">elmer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.9000</span>
-      </span>
-    </div>
+    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
 
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-<li>
-  <a href="reference/index.html">Reference</a>
+    <a class="navbar-brand me-2" href="index.html">elmer</a>
+
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9000</small>
+
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar" class="collapse navbar-collapse ms-3">
+      <ul class="navbar-nav me-auto">
+<li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><a class="dropdown-item" href="articles/streaming-async.html">Streaming and async APIs</a></li>
+    <li><a class="dropdown-item" href="articles/tool-calling.html">Tool calling (a.k.a. function calling)</a></li>
+  </ul>
 </li>
+<li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
       </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-  <a href="https://github.com/hadley/elmer/" class="external-link">
-    <span class="fab fa-github fa-lg"></span>
-
-  </a>
-</li>
+<ul class="navbar-nav">
+<li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json">
+</form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/hadley/elmer/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
-<!--/.nav-collapse -->
+
+
   </div>
-<!--/.container -->
+</nav><div class="container template-home">
+<div class="row">
+  <main id="main" class="col-md-9"><div class="section level1">
+<div class="page-header">
+<img src="logo.png" class="logo" alt=""><h1 id="elmer-">elmer 
+<a class="anchor" aria-label="anchor" href="#elmer-"></a>
+</h1>
 </div>
-<!--/.navbar -->
-
-
-
-      </header><div class="row">
-  <div class="contents col-md-9">
-<div class="section level1">
-<div class="page-header"><h1 id="elmer">elmer<a class="anchor" aria-label="anchor" href="#elmer"></a>
-</h1></div>
 <!-- badges: start -->
 
-<p>The goal of elmer is to provide a user friendly wrapper over the most common APIs for calling llm’s. Major design goals include support for streaming and making it easy to register and call R functions.</p>
+<p>The goal of elmer is to provide a user friendly wrapper over the most common llm providers. Major design goals include support for streaming and making it easy to register and call R functions.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -77,15 +78,99 @@
 <span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"hadley/elmer"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
+<h2 id="prerequisites">Prerequisites<a class="anchor" aria-label="anchor" href="#prerequisites"></a>
 </h2>
-<p>To use elmer, you need an OpenAI API key. You can get one from <a href="https://platform.openai.com/account/api-keys" class="external-link">your developer console</a>. Then you should save that value as the <code>OPENAI_API_KEY</code> environment variable in your <code>~/.Renviron</code> (an easy way to open that file is to call <code>usethis::use_renviron()</code>).</p>
+<p>Depending on which backend you use, you’ll need to set the appropriate environment variable in your <code>~/.Renviron</code> (an easy way to open that file is to call <code>usethis::edit_r_environ()</code>):</p>
+<ul>
+<li>For <code><a href="reference/chat_claude.html">chat_claude()</a></code>, set <code>ANTHROPIC_API_KEY</code> using the key from <a href="https://console.anthropic.com/account/keys" class="external-link uri">https://console.anthropic.com/account/keys</a>.</li>
+<li>For <code><a href="reference/chat_gemini.html">chat_gemini()</a></code>, set <code>GOOGLE_API_KEY</code> using the key from <a href="https://aistudio.google.com/app/apikey" class="external-link uri">https://aistudio.google.com/app/apikey</a>.</li>
+<li>For <code><a href="reference/chat_openai.html">chat_openai()</a></code> set <code>OPENAI_API_KEY</code> using the key from <a href="https://platform.openai.com/account/api-keys" class="external-link uri">https://platform.openai.com/account/api-keys</a>.</li>
+</ul>
+</div>
+<div class="section level2">
+<h2 id="using-elmer">Using elmer<a class="anchor" aria-label="anchor" href="#using-elmer"></a>
+</h2>
+<p>You chat with elmer in several different ways, depending on whether you are working interactively or programmatically. They all start with creating a new chat object:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/elmer" class="external-link">elmer</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">chat</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/chat_openai.html">chat_openai</a></span><span class="op">(</span></span>
+<span>  model <span class="op">=</span> <span class="st">"gpt-4o-mini"</span>,</span>
+<span>  system_prompt <span class="op">=</span> <span class="st">"You are a friendly but terse assistant."</span>,</span>
+<span>  echo <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>Chat objects are stateful: they retain the context of the conversation, so each new query can build on the previous ones. This is true regardless of which of the various ways of chatting you use.</p>
+<div class="section level3">
+<h3 id="interactive-chat-console">Interactive chat console<a class="anchor" aria-label="anchor" href="#interactive-chat-console"></a>
+</h3>
+<p>The most interactive, least programmatic way of using elmer is to chat with it directly in your R console with <code>live_console(chat)</code> or in your browser with <code><a href="reference/live_console.html">live_browser()</a></code>.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/live_console.html">live_console</a></span><span class="op">(</span><span class="va">chat</span><span class="op">)</span></span>
+<span><span class="co">#&gt; ╔════════════════════════════════════════════════════════╗</span></span>
+<span><span class="co">#&gt; ║  Entering chat console. Use """ for multi-line input.  ║</span></span>
+<span><span class="co">#&gt; ║  Press Ctrl+C to quit.                                 ║</span></span>
+<span><span class="co">#&gt; ╚════════════════════════════════════════════════════════╝</span></span>
+<span><span class="co">#&gt; &gt;&gt;&gt; Who were the original creators of R?</span></span>
+<span><span class="co">#&gt; R was originally created by Ross Ihaka and Robert Gentleman at the University of</span></span>
+<span><span class="co">#&gt; Auckland, New Zealand.</span></span>
+<span><span class="co">#&gt;</span></span>
+<span><span class="co">#&gt; &gt;&gt;&gt; When was that?</span></span>
+<span><span class="co">#&gt; R was initially released in 1995. Development began a few years prior to that,</span></span>
+<span><span class="co">#&gt; in the early 1990s.</span></span></code></pre></div>
+<p>The chat console is useful for quickly exploring the capabilities of the model, especially when you’ve customized the chat object with tool integrations (see below).</p>
+<p>Again, keep in mind that the chat object retains state, so when you enter the chat console, any previous interactions with that chat object are still part of the conversation, and any interactions you have in the chat console will persist even after you exit back to the R prompt.</p>
+</div>
+<div class="section level3">
+<h3 id="interactive-method-call">Interactive method call<a class="anchor" aria-label="anchor" href="#interactive-method-call"></a>
+</h3>
+<p>The second most interactive way to chat using elmer is to call the <code>chat()</code> method.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">chat</span><span class="op">$</span><span class="fu">chat</span><span class="op">(</span><span class="st">"What preceding languages most influenced R?"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; R was primarily influenced by the S programming language, particularly S-PLUS.</span></span>
+<span><span class="co">#&gt; Other languages that had an impact include Scheme and various data analysis</span></span>
+<span><span class="co">#&gt; languages.</span></span></code></pre></div>
+<p>If you initialize the chat object with <code>echo = TRUE</code>, as we did above, the <code>chat</code> method streams the response to the console as it arrives. When the entire response is received, it is returned as a character vector (invisibly, so it’s not printed twice).</p>
+<p>This mode is useful when you want to see the response as it arrives, but you don’t want to enter the chat console.</p>
+<div class="section level4">
+<h4 id="vision-image-input">Vision (image input)<a class="anchor" aria-label="anchor" href="#vision-image-input"></a>
+</h4>
+<p>If you want to ask a question about an image, you can pass one or more additional input arguments using <code><a href="reference/content_image_url.html">content_image_file()</a></code> and/or <code><a href="reference/content_image_url.html">content_image_url()</a></code>.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">chat</span><span class="op">$</span><span class="fu">chat</span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="reference/content_image_url.html">content_image_url</a></span><span class="op">(</span><span class="st">"https://www.r-project.org/Rlogo.png"</span><span class="op">)</span>,</span>
+<span>  <span class="st">"Can you explain this logo?"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; The logo of R features a stylized letter "R" in blue, enclosed in an oval shape that resembles the letter "O,"</span></span>
+<span><span class="co">#&gt; signifying the programming language's name. The design conveys a modern and professional look, reflecting its use</span></span>
+<span><span class="co">#&gt; in statistical computing and data analysis. The blue color often represents trust and reliability, which aligns</span></span>
+<span><span class="co">#&gt; with R's role in data science.</span></span></code></pre></div>
+<p>The <code>content_image_url</code> function takes a URL to an image file and sends that URL directly to the API. The <code>content_image_file</code> function takes a path to a local image file and encodes it as a base64 string to send to the API. Note that by default, <code>content_image_file</code> automatically resizes the image to fit within 512x512 pixels; set the <code>resize</code> parameter to <code>"high"</code> if higher resolution is needed.</p>
 </div>
 </div>
-  </div>
-
-  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-    <div class="links">
+<div class="section level3">
+<h3 id="programmatic-chat">Programmatic chat<a class="anchor" aria-label="anchor" href="#programmatic-chat"></a>
+</h3>
+<p>If you don’t want to see the response as it arrives, you can turn off echoing by leaving off the <code>echo = TRUE</code> argument to <code><a href="reference/chat_openai.html">chat_openai()</a></code>.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">chat</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/chat_openai.html">chat_openai</a></span><span class="op">(</span></span>
+<span>  model <span class="op">=</span> <span class="st">"gpt-4o-mini"</span>,</span>
+<span>  system_prompt <span class="op">=</span> <span class="st">"You are a friendly but terse assistant."</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">chat</span><span class="op">$</span><span class="fu">chat</span><span class="op">(</span><span class="st">"Is R a functional programming language?"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "Yes, R supports functional programming concepts. It allows functions to be first-class objects, supports higher-order functions, and encourages the use of functions as core components of code. However, it also supports procedural and object-oriented programming styles."</span></span></code></pre></div>
+<p>This mode is useful for programming using elmer, when the result is either not intended for human consumption or when you want to process the response before displaying it.</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="learning-more">Learning more<a class="anchor" aria-label="anchor" href="#learning-more"></a>
+</h2>
+<ul>
+<li>Learn more about streaming and async APIs in <code><a href="articles/streaming-async.html">vignette("streaming-async")</a></code>.</li>
+<li>Learn more about tool calling (aka function calling) in <code><a href="articles/tool-calling.html">vignette("tool-calling")</a></code>.</li>
+</ul>
+</div>
+</div>
+  </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
 <li><a href="https://github.com/hadley/elmer/" class="external-link">Browse source code</a></li>
@@ -113,34 +198,32 @@
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Hadley Wickham <br><small class="roles"> Author, maintainer </small>  </li>
-<li>RStudio <br><small class="roles"> Copyright holder, funder </small>  </li>
+<li>Posit Software, PBC <br><small class="roles"> Copyright holder, funder </small>  </li>
 </ul>
 </div>
 
 <div class="dev-status">
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
+<li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
 <li><a href="https://github.com/hadley/elmer/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/hadley/elmer/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
 </ul>
 </div>
 
-  </div>
+  </aside>
 </div>
 
 
-      <footer><div class="copyright">
-  <p></p>
-<p>Developed by Hadley Wickham, RStudio.</p>
+    <footer><div class="pkgdown-footer-left">
+  <p>Developed by Hadley Wickham, Posit Software, PBC.</p>
 </div>
 
-<div class="pkgdown">
-  <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+<div class="pkgdown-footer-right">
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
-      </footer>
+    </footer>
 </div>
-
 
 
 
