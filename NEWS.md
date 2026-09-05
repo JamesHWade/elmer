@@ -1,3 +1,7 @@
+# ellmer (development version)
+
+* `chat_openai(auth = "codex")` supports file-backed ChatGPT subscription authentication. This compatibility branch applies tidyverse/ellmer#1067 to ellmer 0.5.0 and preserves release model handling.
+
 # ellmer 0.5.0
 
 ## Lifecycle changes

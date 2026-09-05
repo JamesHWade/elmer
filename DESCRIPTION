@@ -1,6 +1,6 @@
 Package: ellmer
 Title: Chat with Large Language Models
-Version: 0.5.0
+Version: 0.5.0.9000
 Authors@R: c(
     person("Hadley", "Wickham", , "hadley@posit.co", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-4757-117X")),
@@ -103,7 +103,6 @@ Collate:
     'provider-aws-api.R'
     'provider-openai-compatible.R'
     'provider-openai.R'
-    'provider-openai-codex.R'
     'provider-claude.R'
     'provider-aws.R'
     'provider-azure.R'
@@ -121,6 +120,7 @@ Collate:
     'provider-lmstudio.R'
     'provider-mistral.R'
     'provider-ollama.R'
+    'provider-openai-codex.R'
     'provider-openai-tools.R'
     'provider-openrouter.R'
     'provider-perplexity.R'

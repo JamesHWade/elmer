@@ -193,3 +193,28 @@ test_that("Codex authentication errors do not reveal credentials", {
   expect_match(conditionMessage(error), "Invalid ID token")
   expect_false(grepl("secret-id-token", conditionMessage(error), fixed = TRUE))
 })
+
+test_that("subscription authentication works through the async chat path", {
+  codex_home <- withr::local_tempdir()
+  withr::local_envvar(CODEX_HOME = codex_home)
+  write_codex_auth(codex_home, "test-token")
+  local_mocked_responses(function(req) openai_test_streaming_response())
+
+  chat <- chat_openai(auth = "codex", model = "gpt-5.6-luna", echo = "none")
+  result <- sync(chat$chat_async("Hi"))
+  expect_equal(as.character(result), "ok")
+})
+
+test_that("API-key responses keep release model and cost handling", {
+  local_mocked_responses(function(req) {
+    expect_equal(req_get_body(req)$model, "gpt-5.6-terra")
+    response_json(body = openai_test_body())
+  })
+  chat <- chat_openai(
+    credentials = function() "test-api-key",
+    model = "gpt-5.6-terra",
+    echo = "none"
+  )
+  expect_equal(as.character(chat$chat("Hi")), "ok")
+  expect_gt(as.numeric(chat$last_turn()@cost), 0)
+})
